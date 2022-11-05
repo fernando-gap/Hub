@@ -1,0 +1,29 @@
+{
+  "name": "wpphub",
+  "version": "0.0.1",
+  "description": "My whatsapp assistant",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app",
+    "lint": "eslint --fix './src/**/*.js'",
+    "test:prod": "mocha tests/integration/",
+    "test:dev": "mocha tests/unit/",
+    "dev:app": "npx eslint --fix src/**/*.js && npm start",
+    "prepare": "husky install"
+  },
+  "author": "Fernando A.",
+  "license": "MIT",
+  "devDependencies": {
+    "chai": "^4.3.6",
+    "chai-http": "^4.3.0",
+    "eslint": "^8.26.0",
+    "eslint-config-google": "^0.14.0",
+    "husky": "^8.0.1",
+    "mocha": "^10.1.0"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "fastify": "^4.9.2",
+    "venom-bot": "github:orkestral/venom"
+  }
+}
