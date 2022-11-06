@@ -1,16 +1,32 @@
 const venom = require('venom-bot');
+const path = require('path')
+const Server = require('../venom/server.js');
 
 /**
  * Create a new whatsapp session using venom
  */
-class Session {
+class Session extends Server {
   /**
    * @param {string} [name]
    * @param {object} [options] - Options to pass to the session
    */
   constructor(name='server', options={}) {
+    super();
+    if (options && Object.keys(options).length === 0) {
+      this.options = {
+        name: name,
+        multidevice: true,
+        logQR: false,
+      };
+    } else {
+      this.options = options;
+    }
     this.name = name;
-    this.options = options || 'Empty';
+
+    this.start();
+    this.socket((socket) => {
+      this.socket = socket;
+    });
   }
   /**
    * @param {number} [attempts] - amount of attempts to reconnect
@@ -23,12 +39,20 @@ class Session {
     }
     try {
       const client = await venom.create(
-          this.name, this.qrCode,
-          this.status, this.options,
+          this.name, this.qrCode.bind(this),
+          this.status.bind(this), this.options,
       );
       return client;
     } catch (error) {
-      return this.create(attempts-1);
+      console.log(error);
+      console.log('\n\nError...', attempts);
+
+      try {
+        await unlink(path.join(__dirname, 'tokens'));
+        return this.create(attempts-1);
+      } catch(e) {
+        return this.create(attempts-1);
+      }
     }
   }
   /**
@@ -40,28 +64,9 @@ class Session {
    * @throws {Error} whether a input for base64QrImg is invalid
    */
   qrCode(base64QrImg, asciiQR, attempts, urlCode) {
-    const matches = base64QrImg.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
-    const response = {};
-    if (matches.length !== 3) {
-      throw new Error('Invalid input string');
+    if (this.socket && typeof this.socket.emit === 'function') {
+      this.socket.emit('qr', base64QrImg);
     }
-
-    response.type = matches[1];
-
-    // eslint-disable-next-line new-cap
-    response.data = new Buffer.from(matches[2], 'base64');
-
-    const imageBuffer = response;
-    require('fs').writeFile(
-        './web/assets/qr.png',
-        imageBuffer['data'],
-        'binary',
-        function(err) {
-          if (err != null) {
-            console.log(err);
-          }
-        },
-    );
   }
   /**
    * Get session status while connecting
@@ -69,7 +74,13 @@ class Session {
    * @param {string} session - session's name
    */
   status(statusSession, session) {
-    console.log('status: ', statusSession);
+    console.log();
+    console.log(statusSession);
+    console.log();
+
+    if (statusSession === 'qrReadSuccess') {
+      this.close();
+    }
   }
 }
 
