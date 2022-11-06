@@ -1,5 +1,5 @@
 const venom = require('venom-bot');
-const path = require('path')
+const path = require('path');
 const Server = require('../venom/server.js');
 
 /**
@@ -50,7 +50,7 @@ class Session extends Server {
       try {
         await unlink(path.join(__dirname, 'tokens'));
         return this.create(attempts-1);
-      } catch(e) {
+      } catch (e) {
         return this.create(attempts-1);
       }
     }
