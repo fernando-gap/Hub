@@ -1,4 +1,5 @@
 const Message = require('./parser.js');
+const axios = require('axios');
 
 /**
  * Awaits for message events from whatsapp client
@@ -24,7 +25,8 @@ class Receive extends Message {
    * Receive messages
    */
   message() {
-    this.whatsapp.onMessage((message) => {
+    this.whatsapp.onMessage(async (message) => {
+      console.log(message);
       if (!message.from === this.number) {
         return null;
       }
@@ -34,7 +36,9 @@ class Receive extends Message {
       if (info.isCommand) {
         // send message to central
       } else {
-        // send message to leon
+        await axios.post(process.env.LEON_URL, {
+          message: message.body,
+        });
       }
     });
   }

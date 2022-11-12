@@ -4,11 +4,11 @@
   "description": "My whatsapp assistant",
   "main": "app.js",
   "scripts": {
-    "start": "node app",
+    "start": "rm -rf ./tokens && node -r dotenv/config ./src/server/server.js",
     "lint": "eslint --fix './src/**/*.js'",
     "test:prod": "mocha tests/integration/",
-    "test:dev": "mocha tests/unit/",
-    "dev:app": "npx eslint --fix src/**/*.js && npm start",
+    "test:unit": "mocha tests/unit/",
+    "dev:app": "npx eslint --fix src/**/*.js && rm -rf ./tokens && NODE_ENV=test node -r dotenv/config ./src/server/server.js",
     "prepare": "husky install"
   },
   "author": "Fernando A.",
@@ -22,6 +22,7 @@
     "mocha": "^10.1.0"
   },
   "dependencies": {
+    "@fastify/cors": "^8.1.1",
     "@fastify/static": "^6.5.0",
     "dotenv": "^16.0.3",
     "fastify": "^4.9.2",
