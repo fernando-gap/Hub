@@ -5,10 +5,10 @@
   "main": "app.js",
   "scripts": {
     "start": "rm -rf ./tokens && node -r dotenv/config ./src/server/server.js",
-    "lint": "eslint --fix './src/**/*.js'",
+    "lint": "eslint --fix",
     "test:prod": "mocha tests/integration/",
     "test:unit": "mocha tests/unit/",
-    "dev:app": "npx eslint --fix src/**/*.js && rm -rf ./tokens && NODE_ENV=test node -r dotenv/config ./src/server/server.js",
+    "dev:app": "rm -rf ./tokens && NODE_ENV=test node -r dotenv/config ./src/server/server.js",
     "prepare": "husky install"
   },
   "author": "Fernando A.",
@@ -19,13 +19,16 @@
     "eslint": "^8.26.0",
     "eslint-config-google": "^0.14.0",
     "husky": "^8.0.1",
+    "lint-staged": "^13.0.3",
     "mocha": "^10.1.0"
   },
   "dependencies": {
     "@fastify/cors": "^8.1.1",
     "@fastify/static": "^6.5.0",
+    "bree": "^9.1.2",
     "dotenv": "^16.0.3",
     "fastify": "^4.9.2",
+    "fastify-multer": "^2.0.3",
     "fastify-plugin": "^4.3.0",
     "socket.io": "^4.5.3",
     "socket.io-client": "^4.5.3",
