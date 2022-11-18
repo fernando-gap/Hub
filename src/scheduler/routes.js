@@ -1,6 +1,6 @@
 const multer = require('fastify-multer');
 const path = require('path');
-const { writeFile } = require('node:fs/promises');
+const {writeFile} = require('node:fs/promises');
 
 const storage = multer.diskStorage({
   destination: function(req, file, cb) {
@@ -9,36 +9,36 @@ const storage = multer.diskStorage({
   },
   filename: function(req, file, cb) {
     cb(null, file.originalname);
-  }
-})
+  },
+});
 
 const upload = multer({
-  storage: storage
+  storage: storage,
 });
 
 module.exports = async function(server, opts, done) {
   server.register(multer.contentParser);
 
-  server.post('/add', 
-    { 
-      preHandler: upload.any() 
-    }, 
-    async (request, reply) => {
-      let config = await server.config();
-      config.push(request.body);
-      config = JSON.stringify(config, null, 2);
+  server.post('/add',
+      {
+        preHandler: upload.any(),
+      },
+      async (request, reply) => {
+        let config = await server.config();
+        config.push(request.body);
+        config = JSON.stringify(config, null, 2);
 
-      // TODO: Check conflicting file name
-      await writeFile(
-        path.resolve(__dirname, './jobs/config.json'), 
-        config
-      );
+        // TODO: Check conflicting file name
+        await writeFile(
+            path.resolve(__dirname, './jobs/config.json'),
+            config,
+        );
 
-      await server.bree.add(request.body.name);
-      await server.bree.start(request.body.name);
+        await server.bree.add(request.body.name);
+        await server.bree.start(request.body.name);
 
-      reply.status(200).send('Sucess added job');
-  });
+        reply.status(200).send('Sucess added job');
+      });
 
   server.delete('/remove/:name', async (request, reply) => {
     let config = await server.config();
@@ -59,9 +59,9 @@ module.exports = async function(server, opts, done) {
 
     config.forEach((e, index) => {
       if (e.name === request.body.name) {
-        let reqKeys = Object.keys(request.body);
+        const reqKeys = Object.keys(request.body);
 
-        reqKeys.forEach(key => {
+        reqKeys.forEach((key) => {
           config[index][key] = request.body[key];
         });
       }
@@ -71,4 +71,4 @@ module.exports = async function(server, opts, done) {
     reply.status(200).send('Job edited');
   });
   done();
-}
+};

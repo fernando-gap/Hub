@@ -26,19 +26,27 @@ class Receive extends Message {
    */
   message() {
     this.whatsapp.onMessage(async (message) => {
-      console.log(message);
       if (!message.from === this.number) {
         return null;
       }
 
       const info = this.parseFromWhatsapp(message);
+      console.log(info);
 
-      if (info.isCommand) {
-        // send message to central
-      } else {
-        await axios.post(process.env.LEON_URL, {
-          message: message.body,
-        });
+      try {
+        if (info.isCommand) {
+          const uri = {
+            port: process.env.PORT_CENTRAL,
+            host: process.env.HOST,
+          };
+          await axios.post(`http://${uri.host}:${uri.port}/`, info);
+        } else {
+          await axios.post(process.env.LEON_URL, {
+            message: message.body,
+          });
+        }
+      } catch (e) {
+        console.log(e);
       }
     });
   }

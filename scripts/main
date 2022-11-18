@@ -1,0 +1,6 @@
+#! /bin/sh
+
+rm -rf ./tokens &2> /dev/null;
+pm2 start -n "Central" ./src/central/server.js
+pm2 start -n "Scheduler" ./src/scheduler/server.js
+pm2 start -n "Venom" ./src/server/server.js

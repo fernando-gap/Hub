@@ -9,7 +9,7 @@ class Server {
    * @param {object} [options]
    * @param {number} [port]
    */
-  start(options={}, port=8001) {
+  start(options={}, port=process.env.PORT_TEMP) {
     this.fastify = fastify(options);
     this.port = port;
 

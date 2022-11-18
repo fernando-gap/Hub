@@ -1,1 +1,7 @@
-[]
+[
+  {
+    "name": "one",
+    "timeout": "30 seconds",
+    "interval": "5 seconds"
+  }
+]
