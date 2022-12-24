@@ -37,7 +37,10 @@ server.register(fp(async (fastify, opts, next) => {
 
 server.register(routes);
 
-server.listen({port: process.env.PORT_EVENT}, async (err, address) => {
+server.listen({
+  port: process.env.PORT_EVENT,
+  host: process.env.HOST,
+}, async (err, address) => {
   if (err) {
     throw err;
   }

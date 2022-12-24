@@ -1,5 +1,4 @@
 const venom = require('venom-bot');
-const path = require('path');
 const Server = require('../venom/server.js');
 
 /**
@@ -33,27 +32,12 @@ class Session extends Server {
    * @throws Will an error if the session had failed to connect
    * @return {object}
    */
-  async create(attempts=5) {
-    if (attempts < 1) {
-      throw new Error('Application Can\'t Stabilish Connection');
-    }
-    try {
-      const client = await venom.create(
-          this.name, this.qrCode.bind(this),
-          this.status.bind(this), this.options,
-      );
-      return client;
-    } catch (error) {
-      console.log(error);
-      console.log('\n\nError...', attempts);
-
-      try {
-        await unlink(path.join(__dirname, 'tokens'));
-        return this.create(attempts-1);
-      } catch (e) {
-        return this.create(attempts-1);
-      }
-    }
+  async create() {
+    return await venom.create(
+        this.name,
+        this.qrCode.bind(this),
+        this.status.bind(this),
+        this.options);
   }
   /**
    * Get QR code from session and save in file
@@ -74,10 +58,6 @@ class Session extends Server {
    * @param {string} session - session's name
    */
   status(statusSession, session) {
-    console.log();
-    console.log(statusSession);
-    console.log();
-
     if (statusSession === 'qrReadSuccess') {
       this.close();
     }

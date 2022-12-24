@@ -1,0 +1,18 @@
+# Enviroment Variables
+
+```sh
+HOST
+NUMBER
+PORT_CENTRAL
+PORT_EVENT
+PORT_TEMP
+PORT_WPP
+PORT_LEON
+SEND_ENDPOINT
+HOST_CENTRAL
+HOST_EVENT
+HOST_LEON
+HOST_WPP
+```
+
+You need to set up these variables in `.env`.

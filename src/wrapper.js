@@ -2,7 +2,7 @@ const axios = require('axios');
 
 const uri = {
   port: process.env.PORT_WPP,
-  host: process.env.HOST,
+  host: process.env.HOST_WPP,
   endpoint: process.env.SEND_ENDPOINT,
 };
 

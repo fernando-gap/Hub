@@ -6,11 +6,10 @@ require('dotenv').config({
 const fastify = require('fastify');
 const session = require('./plugins/client.js');
 const routes = require('./routes/app.js');
-
 const cors = require('@fastify/cors');
 
 const server = fastify({
-  pluginTimeout: 1000 * 60 * 5,
+  pluginTimeout: 0,
 });
 
 server.register(cors, {

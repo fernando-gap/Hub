@@ -1,0 +1,43 @@
+services:
+  venom:
+    build:
+      context: .
+      dockerfile: "./src/server/Dockerfile"
+    ports:
+      - "$PORT_WPP:$PORT_WPP"
+      - "$PORT_TEMP:$PORT_TEMP"
+    env_file:
+      - ./.env
+    environment:
+      - NODE_ENV=production
+    networks:
+      - whatsapp
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+  scheduler:
+    build:
+      context: .
+      dockerfile: "./src/scheduler/Dockerfile"
+    ports:
+      - "$PORT_EVENT:$PORT_EVENT"
+    env_file:
+      - ./.env
+    environment:
+      - NODE_ENV=production
+    networks:
+      - whatsapp
+  central:
+    build:
+      context: .
+      dockerfile: "./src/central/Dockerfile"
+    ports:
+      - "$PORT_CENTRAL:$PORT_CENTRAL"
+    env_file:
+      - ./.env
+    environment:
+      - NODE_ENV=production
+    networks:
+      - whatsapp
+
+networks:
+  whatsapp:

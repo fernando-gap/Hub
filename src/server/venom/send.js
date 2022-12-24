@@ -23,26 +23,11 @@ class Send extends Message {
   /**
    * Send a message
    * @param {object} message
+   * @param {string|array} message.body
    * @async
    */
   async reply(message) {
-    /**
-     * @message format as follows:
-     * message = {
-     *    text: array || string,
-     *    hasAttachments: boolean
-     *    attachments: [
-     *      {
-     *        path: string,
-     *        name: string,
-     *        desc: string, optional
-     *      }
-     *    ]
-     * }
-     */
-
     message = this.parseToWhatsapp(message);
-
 
     if (Array.isArray(message.text)) {
       for (let msg = 0; msg < message.text.length; ++msg) {

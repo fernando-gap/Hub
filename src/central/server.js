@@ -4,8 +4,11 @@ require('dotenv').config({
 });
 
 const execute = require('./operation');
-const wp = require('../wrapper.js');
 
+/**
+ * Docker & Local usage
+ */
+const wp = require('../wrapper.js');
 const fastify = require('fastify');
 const server = fastify();
 
@@ -33,4 +36,5 @@ server.post('/', async (request, reply) => {
 
 server.listen({
   port: process.env.PORT_CENTRAL,
+  host: process.env.HOST,
 }, (err, address) => console.log(err, address));

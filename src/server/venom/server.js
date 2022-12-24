@@ -12,6 +12,7 @@ class Server {
   start(options={}, port=process.env.PORT_TEMP) {
     this.fastify = fastify(options);
     this.port = port;
+    this.host = process.env.HOST;
 
     this.fastify.register(require('@fastify/static'), {
       root: path.join(__dirname, 'web'),
@@ -52,7 +53,7 @@ class Server {
    * Listen on some port
    */
   listen() {
-    this.fastify.listen({port: this.port}, (err, address) => {
+    this.fastify.listen({port: this.port, host: this.host}, (err, address) => {
       if (err) {
         throw err;
       }

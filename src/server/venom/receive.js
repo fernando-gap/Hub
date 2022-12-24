@@ -37,7 +37,7 @@ class Receive extends Message {
         if (info.isCommand) {
           const uri = {
             port: process.env.PORT_CENTRAL,
-            host: process.env.HOST,
+            host: process.env.HOST_CENTRAL,
           };
           await axios.post(`http://${uri.host}:${uri.port}/`, info);
         } else {
